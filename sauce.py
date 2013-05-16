@@ -10,6 +10,7 @@ pp = pprint.PrettyPrinter(indent = 4)
 from db import session
 from models import Book
 
+dashes="-"*80
 
 def print_books(books):
     for b in books:
@@ -17,48 +18,43 @@ def print_books(books):
         print str(b.title[0:49]).ljust(49), str(b.isbn_13).rjust(13)
         
 
-limit = 7
-dashes = "-"*80
+def display_books(heading, query_results, limit=7):
+    print
+    print heading + " (" + str(len(query_results)) + ")"
+    print dashes
+    print_books(query_results[0:limit])
+
 
 print "sauce book manager"
 print dashes
 
-print
-print "books on kindle that i want to read"
-print dashes
+#
 
+books_reading = session.query(Book).filter(Book.status=="Reading").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
 
-# this should really be sorted by bumps, date_added
-# the proper way to do this is just import into a db
+display_books("books i'm reading", books_reading)
 
-books_on_kindle_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==True, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).limit(limit).all()
+#
 
-print_books(books_on_kindle_to_read)
+books_on_kindle_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==True, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
 
-print
-print "physical books that i want to read"
-print dashes
+display_books("books on kindle that i want to read",
+              books_on_kindle_to_read)
 
-books_physical_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).limit(limit).all()
+#
 
-print_books(books_physical_to_read)
+books_physical_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
 
+display_books("physical books that i want to read",
+              books_physical_to_read)
 
-print
-print "books i want to read and do not own"
-print dashes
+#
 
+books_unowned_to_read = session.query(Book).filter(Book.owned==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
 
-books_unowned_to_read = session.query(Book).filter(Book.owned==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).limit(limit).all()
-
-print_books(books_unowned_to_read)
-
+display_books("books i want to read and do not own",
+              books_unowned_to_read)
 
 print
-print "books i'm reading"
-print dashes
 
 
-books_reading = session.query(Book).filter(Book.status=="Reading").order_by(Book.bumps.desc(), Book.date_added.asc()).limit(limit).all()
-
-print_books(books_reading)
