@@ -29,7 +29,10 @@ with open('goodreads_export.csv', 'rb') as csvfile:
         book["ISBN"] = re.match('="([\d\w]*)"', row[5]).group(1)
         book["ISBN13"] = re.match('="([\d\w]*)"', row[6]).group(1)
         book["My Rating"] = row[7]
-        book["Date Read"] = parser.parse(row[14])
+        if row[14] == "":
+            book["Date Read"] = None
+        else:
+            book["Date Read"] = parser.parse(row[14])
         book["Date Added"] = parser.parse(row[15])
         book["Review"] = row[19]
 

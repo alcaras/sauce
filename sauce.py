@@ -3,6 +3,8 @@ import pdb
 
 import sys
 
+import datetime
+
 import pprint
 pp = pprint.PrettyPrinter(indent = 4)
 
@@ -12,24 +14,32 @@ from models import Book
 
 dashes="-"*80
 
-def print_books(books):
+def print_books(books, read=False):
     for b in books:
-        print str(b.bumps).rjust(3), str(b.date_added)[0:10].rjust(12),
+        print str(b.bumps).rjust(3),
+        if read == False:
+            print str(b.date_added)[0:10].rjust(12),
+        else:
+            print str(b.date_read)[0:10].rjust(12),
         print str(b.title[0:49]).ljust(49), str(b.isbn_13).rjust(13)
         
 
-def display_books(heading, query_results, limit=7, suppress_count=False):
+def display_books(heading, query_results, limit=7, suppress_count=False, read=False):
     print
     if not suppress_count:
         print heading + " (" + str(len(query_results)) + ")"
     else:
         print heading
     print dashes
-    print_books(query_results[0:limit])
+    print_books(query_results[0:limit], read)
 
 
 print "sauce book manager"
 print dashes
+
+books_read = session.query(Book).filter(Book.status=="Read").order_by(Book.date_read.desc()).all()
+
+display_books("books i've recently read", books_read, read=True)
 
 #
 
