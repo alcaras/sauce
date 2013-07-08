@@ -14,3 +14,10 @@ You'll need to create a credentials.py with two lines:
 (Sadly the Goodreads API doesn't provide bulk CSV download, 
 as far as I can tell, so we have to log in as you and 
 download the CSV file ourselves).
+
+
+You'll also need to create the database:
+
+    python db_create.py
+    
+Then just run refresh to update your local copy or view to just view.
