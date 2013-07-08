@@ -20,4 +20,12 @@ You'll also need to create the database:
 
     python db_create.py
     
-Then just run refresh to update your local copy or view to just view.
+# Updating your DB and Viewing Your Reading List
+    
+Just:
+
+    ./refresh
+    
+# Viewing Your Reading List
+
+    ./view
