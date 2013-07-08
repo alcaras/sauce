@@ -1,10 +1,10 @@
-sauce
+# sauce
 =====
 
 book organizer/reading list generator using goodreads
 
 
-# Setup
+## Setup
 
 You'll need to create a credentials.py with two lines:
 
@@ -20,12 +20,12 @@ You'll also need to create the database:
 
     python db_create.py
     
-# Updating your DB and Viewing Your Reading List
+## Updating your DB and Viewing Your Reading List
     
 Just:
 
     ./refresh
     
-# Viewing Your Reading List
+## Viewing Your Reading List
 
     ./view
