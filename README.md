@@ -21,8 +21,6 @@ You'll also need to create the database:
     python db_create.py
     
 ## Updating your DB and Viewing Your Reading List
-    
-Just:
 
     ./refresh
     
