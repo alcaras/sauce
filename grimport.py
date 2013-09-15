@@ -22,10 +22,10 @@ with open('goodreads_export.csv', 'rb') as csvfile:
             i += 1
             continue
         book = {}
-        book["Title"] = unicode(row[1], 'utf8')
-        book["Author"] = unicode(row[2], 'utf8')
-        book["Extra Author"] = unicode(row[4], 'utf8')
-        book["Publisher"] = row[9]
+        book["Title"] = unicode(row[1], 'utf-8')
+        book["Author"] = unicode(row[2], 'utf-8')
+        book["Extra Author"] = unicode(row[4], 'utf-8')
+        book["Publisher"] = unicode(row[9], 'utf-8')
         book["ISBN"] = re.match('="([\d\w]*)"', row[5]).group(1)
         book["ISBN13"] = re.match('="([\d\w]*)"', row[6]).group(1)
         book["My Rating"] = row[7]
@@ -34,7 +34,7 @@ with open('goodreads_export.csv', 'rb') as csvfile:
         else:
             book["Date Read"] = parser.parse(row[14])
         book["Date Added"] = parser.parse(row[15])
-        book["Review"] = row[19]
+        book["Review"] = unicode(row[19], 'utf-8')
 
         book["Bumps"] = 0
         book["Reading Status"] = ""

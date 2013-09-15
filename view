@@ -1,2 +1,2 @@
 clear
-python sauce.py
+cat to-read.txt
