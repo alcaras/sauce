@@ -32,6 +32,28 @@ def pretty_counts(when, counts):
 
 
     
+def year_analysis(books_read):
+    # how many books read this year?
+    counts = {}
+    now = datetime.datetime.now()
+    for b in books_read:
+        if b.date_read is not None:
+            tag = b.date_read.year
+            if tag in counts:
+                counts[tag] += 1
+            else:
+                counts[tag] = 1
+    
+    print dashes
+    print str("This year").rjust(12) + " " + str(now.year),
+    print str("").ljust(25), str(counts[now.year]).rjust(3)
+    print str("Last year").rjust(12) + " " + str(now.year-1),
+    print str("").ljust(25), str(counts[now.year-1]).rjust(3)
+    for i in range(now.year-2, 2005, -1):
+        print str("").rjust(12) + " " + str(i),
+        print str("").ljust(25), str(counts[i]).rjust(3)
+
+    
 
 
 def month_analysis(books_read):
@@ -48,7 +70,7 @@ def month_analysis(books_read):
     now = datetime.datetime.now()
     
 
-    print "books read in past months"
+    print "books read over time"
     print dashes
     for less in range(0, 14):
         pretty_counts(now+relativedelta( months = -less ), counts)
@@ -84,6 +106,10 @@ print dashes
 books_read = session.query(Book).filter(Book.status=="Read").order_by(Book.date_read.desc()).all()
 
 month_analysis(books_read)
+
+year_analysis(books_read)
+
+print dashes
 
 display_books("books i've recently read", books_read, read=True)
 
