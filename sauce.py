@@ -14,7 +14,7 @@ pp = pprint.PrettyPrinter(indent = 4)
 from db import session
 from models import Book
 
-dashes="-"*80
+dashes="-"*86
 
 def pretty_counts(when, counts):
     year = when.year
