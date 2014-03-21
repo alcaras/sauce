@@ -45,8 +45,9 @@ def year_analysis(books_read):
                 counts[tag] = 1
     
     print dashes
-    print str("This year").rjust(12) + " " + str(now.year),
-    print str("").ljust(25), str(counts[now.year]).rjust(3)
+    if now.year in counts:
+        print str("This year").rjust(12) + " " + str(now.year),
+        print str("").ljust(25), str(counts[now.year]).rjust(3)
     print str("Last year").rjust(12) + " " + str(now.year-1),
     print str("").ljust(25), str(counts[now.year-1]).rjust(3)
     for i in range(now.year-2, 2005, -1):
@@ -87,7 +88,9 @@ def print_books(books, read=False):
         else:
             print str(b.date_read)[0:10].rjust(12),
         unicode_happy = str((b.title).encode('utf-8')[0:49]).ljust(49)
-        print unicode_happy, str(b.isbn_13).rjust(13)
+        print unicode_happy,
+        print str(b.pages).rjust(5),
+        print str(b.isbn_13).rjust(13)
         
 
 def display_books(heading, query_results, limit=10, suppress_count=False, read=False):
@@ -115,27 +118,27 @@ display_books("books i've recently read", books_read, read=True)
 
 #
 
-books_reading = session.query(Book).filter(Book.status=="Reading").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
+books_reading = session.query(Book).filter(Book.status=="Reading").order_by(Book.bumps.desc(), Book.pages.asc()).all()
 
 display_books("books i'm reading", books_reading)
 
 #
 
-books_on_kindle_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==True, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
+books_on_kindle_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==True, Book.status=="To Read").order_by(Book.bumps.desc(), Book.pages.asc()).all()
 
 display_books("books on kindle i own that i want to read",
               books_on_kindle_to_read)
 
 #
 
-books_physical_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
+books_physical_to_read = session.query(Book).filter(Book.owned==True, Book.kindle==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.pages.asc()).all()
 
 display_books("physical books i own that i want to read",
               books_physical_to_read)
 
 #
 
-books_unowned_to_read = session.query(Book).filter(Book.owned==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.date_added.asc()).all()
+books_unowned_to_read = session.query(Book).filter(Book.owned==False, Book.status=="To Read").order_by(Book.bumps.desc(), Book.pages.asc()).all()
 
 display_books("books i want to read and do not own",
               books_unowned_to_read,

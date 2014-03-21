@@ -36,6 +36,7 @@ with open('goodreads_export.csv', 'rb') as csvfile:
         book["Date Added"] = parser.parse(row[15])
         book["Review"] = unicode(row[19], 'utf-8')
 
+        book["Number of Pages"] = row[11]
         book["Bumps"] = 0
         book["Reading Status"] = ""
         if row[18] == "to-read":
@@ -80,6 +81,7 @@ for book in books:
                     kindle=book["Kindle"],
                     owned=book["Owned"],
                     status=book["Reading Status"],
+                    pages=book["Number of Pages"],
                     )
     session.add(new_book)
 

@@ -31,4 +31,5 @@ class Book(Base):
     status = Column(String)
     owned = Column(Boolean)
     kindle = Column(Boolean)
+    pages = Column(Integer)
         
