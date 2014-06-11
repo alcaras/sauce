@@ -10,13 +10,14 @@ from dateutil.relativedelta import relativedelta
 import pprint
 pp = pprint.PrettyPrinter(indent = 4)
 
+width_stars = 35
 
 from db import session
 from models import Book
 
 dashes="-"*86
 
-def pretty_counts(when, counts):
+def pretty_counts(when, counts, pages):
     year = when.year
     month = when.month
     tag = str(year) + "-" + str(month)
@@ -28,11 +29,16 @@ def pretty_counts(when, counts):
     stars = ""
     for i in range(0, n):
         stars += "* "
-    print str(stars).ljust(25), str(n).rjust(3)
+    print str(stars).ljust(width_stars), str(n).rjust(3),
+    if tag in pages:
+        print str(pages[tag]).rjust(7)
+    else:
+        print str("0").rjust(7)
 
 
     
 def year_analysis(books_read):
+    pages = {}
     # how many books read this year?
     counts = {}
     now = datetime.datetime.now()
@@ -43,16 +49,24 @@ def year_analysis(books_read):
                 counts[tag] += 1
             else:
                 counts[tag] = 1
+                pages[tag] = 0
+            if b.pages is not None:
+                if not isinstance(b.pages, unicode):
+                    pages[tag] += b.pages
     
     print dashes
+    width_pages = 7
     if now.year in counts:
         print str("This year").rjust(12) + " " + str(now.year),
-        print str("").ljust(25), str(counts[now.year]).rjust(3)
+        print str("").ljust(width_stars), str(counts[now.year]).rjust(3),
+        print str(pages[now.year]).rjust(width_pages)
     print str("Last year").rjust(12) + " " + str(now.year-1),
-    print str("").ljust(25), str(counts[now.year-1]).rjust(3)
+    print str("").ljust(width_stars), str(counts[now.year-1]).rjust(3),
+    print str(pages[now.year-1]).rjust(width_pages)
     for i in range(now.year-2, 2005, -1):
         print str("").rjust(12) + " " + str(i),
-        print str("").ljust(25), str(counts[i]).rjust(3)
+        print str("").ljust(width_stars), str(counts[i]).rjust(3),
+        print str(pages[i]).rjust(width_pages)
 
     
 
@@ -60,6 +74,7 @@ def year_analysis(books_read):
 def month_analysis(books_read):
     # let's go back through the last n months
     counts = {}
+    pages = {}
     for b in books_read:
         if b.date_read is not None:
             tag = str(b.date_read.year) + "-" + str(b.date_read.month)
@@ -67,14 +82,19 @@ def month_analysis(books_read):
                 counts[tag] += 1
             else:
                 counts[tag] = 1
+                pages[tag] = 0
+            if b.pages is not None:
+                if not isinstance(b.pages, unicode):
+                    pages[tag] += b.pages
+
 
     now = datetime.datetime.now()
     
 
-    print "books read over time"
+    print "books read over time", " "*20, "books", "  pages"
     print dashes
     for less in range(0, 14):
-        pretty_counts(now+relativedelta( months = -less ), counts)
+        pretty_counts(now+relativedelta( months = -less ), counts, pages)
 
     
 

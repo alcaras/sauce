@@ -22,6 +22,8 @@ with open('goodreads_export.csv', 'rb') as csvfile:
             i += 1
             continue
         book = {}
+        if not row[1]:
+            continue
         book["Title"] = unicode(row[1], 'utf-8')
         book["Author"] = unicode(row[2], 'utf-8')
         book["Extra Author"] = unicode(row[4], 'utf-8')
